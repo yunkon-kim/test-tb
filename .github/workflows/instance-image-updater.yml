@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: cloud-barista/cb-tumblebug
-        path: main
+        ref: v0.6.3
         
     - name: Create a dummy
       id: checker
