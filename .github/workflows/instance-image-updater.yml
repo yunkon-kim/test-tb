@@ -29,7 +29,10 @@ jobs:
       id: checker
       shell: bash
       run: |
-        GIT_STATUS=$(git status)
+        #GIT_STATUS=$(git status)
+        ls -al
+        git status
+        
         cat > output.md <<EOF
         ### header
         - bullet
