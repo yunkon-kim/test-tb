@@ -29,15 +29,17 @@ jobs:
       id: checker
       shell: bash
       run: |
-        #GIT_STATUS=$(git status)
-        ls -al
-        git status
+        ls -al        
+        GIT_STATUS=$(git status)
         
         cat > output.md <<EOF
         ### header
         - bullet
-        text
+        (start)
+        
         ${GIT_STATUS}
+        
+        (end)
         EOF
         echo ::set-output name=output_path::"./output.md"
         
