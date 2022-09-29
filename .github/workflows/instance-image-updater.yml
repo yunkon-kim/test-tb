@@ -44,5 +44,6 @@ jobs:
         title: An example issue
         content-filepath: output.md
         labels: |
-          outdated
-          lang/ko
+          test
+          need update
+          good first issue
