@@ -1,14 +1,8 @@
 name: Instance image updater
 
-# Ref: schedule - https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
-# on:
-#   schedule:
-#     - cron: '0 5 * * *' # At 5:00
-
-# Currently, use issee_comment event for testing
+# Currently, use workflow_dispatch by which we can manually run this workflow
 on:
-  issues:
-    types: [opened]
+  workflow_dispatch:
 
 jobs:
   update-image:
@@ -44,24 +38,11 @@ jobs:
         echo ::set-output name=output_path::"./output.md"
         
       
-    - name: Create Issue From File
-    
+    - name: Create an issue from file    
       uses: peter-evans/create-issue-from-file@v4
       with:
         title: An example issue
-        content-filepath: ${{ steps.checker.outputs.output_path }}
+        content-filepath: output.md
         labels: |
-          test
-      
-#     steps:
-#     - name: Create commit comment
-#       uses: peter-evans/create-or-update-comment@v2
-#       with:
-#         token: ${{ secrets.GITHUB_TOKEN }}
-#         issue-number: ${{ github.event.issue.number }}
-#         body: |
-#           This is a multi-line test comment
-#           - With GitHub **Markdown** :sparkles:
-#           - Created by [create-or-update-comment][1]
-
-#           [1]: https://github.com/peter-evans/create-or-update-comment
+          outdated
+          lang/ko
