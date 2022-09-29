@@ -19,14 +19,22 @@ jobs:
 #       pull-requests: write
 
     steps:
+    - name: Checkout tools repo
+      uses: actions/checkout@v3
+      with:
+        repository: cloud-barista/cb-tumblebug
+        path: main
+        
     - name: Create a dummy
       id: checker
       shell: bash
       run: |
+        GIT_STATUS=$(git status)
         cat > output.md <<EOF
         ### header
         - bullet
         text
+        ${GIT_STATUS}
         EOF
         echo ::set-output name=output_path::"./output.md"
         
