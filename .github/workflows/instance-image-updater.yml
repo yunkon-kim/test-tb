@@ -48,17 +48,23 @@ jobs:
         sudo docker ps -a
         sleep 5        
         
+    - name: Do something
+      shell: bash
+      run: |
         echo "(DEBUG) Create issue content"
-        cat > output.md <<EOF
+        cat <<EOF > output.md
         ### header
         - bullet
-          (start)
+        - bullet 
+        1. number
         
-          Hello world!!
-          This issue is created by 'peter-evans/create-issue-from-file@v4'
-        
-        (end)
-        EOF       
+        message start
+
+        Hello world!!
+        This issue is created by "peter-evans/create-issue-from-file@v4"
+
+        message end
+        EOF
       
     - name: Create an issue from file    
       uses: peter-evans/create-issue-from-file@v4
