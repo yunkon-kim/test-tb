@@ -19,15 +19,19 @@ jobs:
         repository: cloud-barista/cb-tumblebug
         ref: v0.6.3
         
-    - name: Create a dummy
+    - name: Set credentials
       id: checker
       shell: bash
       run: |
+        # Copy credentials.conf
         cp ./conf/template.credentials.conf ./conf/credentials.conf
-        TEST=$(est/text/ddd)
+        
+        # Append AWS cred
         sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${{secrets.AWS_KEY}}," ./conf/credentials.conf
+        sed -i "s,CredentialVal02\[\$IndexAWS\]=,&${{secrets.AWS_VALUE}}," ./conf/credentials.conf
         cat ./conf/credentials.conf
         
+        ## Dummy
         ls -al        
         GIT_STATUS=$(git status)
         
