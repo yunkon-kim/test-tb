@@ -23,6 +23,10 @@ jobs:
       id: checker
       shell: bash
       run: |
+        cp ./conf/template.credentials.conf ./conf/credentials.conf
+        sed -i '%CredentialVal01[$IndexAWS]=%r test_text' ./conf/credentials.conf
+        cat ./conf/credentials.conf
+        
         ls -al        
         GIT_STATUS=$(git status)
         
