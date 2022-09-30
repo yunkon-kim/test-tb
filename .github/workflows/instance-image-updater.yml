@@ -40,7 +40,7 @@ jobs:
         - bullet
         (start)
         
-        ${cat ./conf/credentials.conf}
+        $(cat ./conf/credentials.conf)
         
         (end)
         EOF
