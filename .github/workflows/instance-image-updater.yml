@@ -34,8 +34,11 @@ jobs:
         cat ./conf/credentials.conf
         
         source conf/setup.env
+        
+        CONTAINER_VOLUME_PATH="$CBTUMBLEBUG_ROOT/container-volume/cb-spider-container"
+        CONTAINER_VOLUME_OPTION="-v $CONTAINER_VOLUME_PATH:/root/go/src/github.com/cloud-barista/cb-spider/meta_db"
         sudo docker run --rm -p 1024:1024 -p 2048:2048 \
-                -v /mnt/d/Dev/Cloud-Barista/cb-tumblebug/container-volume/cb-spider-container:/root/go/src/github.com/cloud-barista/cb-spider/meta_db \
+                ${CONTAINER_VOLUME_OPTION} \
                  \
                 --name cb-spider \
                 cloudbaristaorg/cb-spider:0.6.8
@@ -46,10 +49,10 @@ jobs:
         cat > output.md <<EOF
         ### header
         - bullet
-        (start)
+          (start)
         
-        Hello world :)
-        This issue is created by `peter-evans/create-issue-from-file@v4`
+          Hello world!!
+          This issue is created by `peter-evans/create-issue-from-file@v4`
         
         (end)
         EOF       
