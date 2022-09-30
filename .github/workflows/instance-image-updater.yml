@@ -19,8 +19,7 @@ jobs:
         repository: cloud-barista/cb-tumblebug
         ref: v0.6.3
         
-    - name: Up and running  credentials
-      id: Setup frameworks
+    - name: Setup frameworks
       shell: bash
       run: |
       
@@ -53,11 +52,7 @@ jobs:
         This issue is created by `peter-evans/create-issue-from-file@v4`
         
         (end)
-        EOF
-        
-        
-        # echo ::set-output name=output_path::"./output.md"
-        
+        EOF       
       
     - name: Create an issue from file    
       uses: peter-evans/create-issue-from-file@v4
