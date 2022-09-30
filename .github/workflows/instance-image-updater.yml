@@ -24,8 +24,8 @@ jobs:
       shell: bash
       run: |
         cp ./conf/template.credentials.conf ./conf/credentials.conf
-        TEST="test/text/ddd"
-        sed -i 's,CredentialVal01\[\$IndexAWS\]=,&${TEST},' ./conf/credentials.conf
+        TEST=$(est/text/ddd)
+        sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${TEST}," ./conf/credentials.conf
         cat ./conf/credentials.conf
         
         ls -al        
