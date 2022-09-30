@@ -52,7 +52,7 @@ jobs:
           (start)
         
           Hello world!!
-          This issue is created by `peter-evans/create-issue-from-file@v4`
+          This issue is created by 'peter-evans/create-issue-from-file@v4'
         
         (end)
         EOF       
