@@ -13,38 +13,50 @@ jobs:
 #       pull-requests: write
 
     steps:
-    - name: Checkout tools repo
+    - name: Checkout repo
       uses: actions/checkout@v3
       with:
         repository: cloud-barista/cb-tumblebug
         ref: v0.6.3
         
-    - name: Set credentials
-      id: checker
+    - name: Up and running  credentials
+      id: Setup frameworks
       shell: bash
       run: |
-        # Copy credentials.conf
+      
+        # Setup credentials
         cp ./conf/template.credentials.conf ./conf/credentials.conf
         
         # Append AWS cred
         sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${{secrets.AWS_KEY}}," ./conf/credentials.conf
         sed -i "s,CredentialVal02\[\$IndexAWS\]=,&${{secrets.AWS_VALUE}}," ./conf/credentials.conf
+        
+        echo "(DEBUG) Print credential.conf (Secrets are masked as ***)
         cat ./conf/credentials.conf
         
-        ## Dummy
-        ls -al        
-        GIT_STATUS=$(git status)
+        source conf/setup.env
+        sudo docker run --rm -p 1024:1024 -p 2048:2048 \
+                -v /mnt/d/Dev/Cloud-Barista/cb-tumblebug/container-volume/cb-spider-container:/root/go/src/github.com/cloud-barista/cb-spider/meta_db \
+                 \
+                --name cb-spider \
+                cloudbaristaorg/cb-spider:0.6.8
+                
+        sleep 3
+        sudo docker ps -a
         
         cat > output.md <<EOF
         ### header
         - bullet
         (start)
         
-        $(cat ./conf/credentials.conf)
+        Hello world :)
+        This issue is created by `peter-evans/create-issue-from-file@v4`
         
         (end)
         EOF
-        echo ::set-output name=output_path::"./output.md"
+        
+        
+        # echo ::set-output name=output_path::"./output.md"
         
       
     - name: Create an issue from file    
