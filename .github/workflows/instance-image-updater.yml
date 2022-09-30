@@ -30,57 +30,21 @@ jobs:
         sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${{secrets.AWS_KEY}}," ./conf/credentials.conf
         sed -i "s,CredentialVal02\[\$IndexAWS\]=,&${{secrets.AWS_VALUE}}," ./conf/credentials.conf
         
-        echo "(DEBUG) Print credential.conf (Secrets are masked as ***)
+        echo "(DEBUG) Print credential.conf (Secrets are masked as ***)"
         cat ./conf/credentials.conf
         
-        #source conf/setup.env
-        SCRIPT_DIR=`dirname ${BASH_SOURCE[0]-$0}`
-        export CBTUMBLEBUG_ROOT=`cd $SCRIPT_DIR && cd .. && pwd`
-        # export CBTUMBLEBUG_ROOT=$HOME/go/src/github.com/cloud-barista/cb-tumblebug
-        export CBSTORE_ROOT=$CBTUMBLEBUG_ROOT
-        export CBLOG_ROOT=$CBTUMBLEBUG_ROOT
-        export SPIDER_CALL_METHOD=REST
-        export DRAGONFLY_CALL_METHOD=REST
-        export SPIDER_REST_URL=http://localhost:1024/spider
-        export DRAGONFLY_REST_URL=http://localhost:9090/dragonfly
-
-        export DB_URL=localhost:3306
-        export DB_DATABASE=cb_tumblebug
-        export DB_USER=cb_tumblebug
-        export DB_PASSWORD=cb_tumblebug
-
-        export API_USERNAME=default
-        export API_PASSWORD=default
-
-        export CB_NETWORK_SERVICE_ENDPOINT=localhost:8053
-        # comma separated such as "aaa.aaa.aaa.aaa:2379,bbb.bbb.bbb.bbb:2379,..."
-        export CB_NETWORK_ETCD_ENDPOINTS="localhost:2379"
-
-        # Set period for auto control goroutine invocation
-        export AUTOCONTROL_DURATION_MS=10000
-
-        # Set SELF_ENDPOINT, if you want to access Swagger API dashboard from outside. (Ex: export SELF_ENDPOINT=xxx.xxx.xxx.xxx:1323)
-        export SELF_ENDPOINT=localhost:1323
-
-
-        # Environment variables that you don't need to touch
-
-        # Ignore a protocol buffer namespace conflict 
-        export GOLANG_PROTOBUF_REGISTRATION_CONFLICT=ignore
-
-        # Swagger UI API document file path 
-        export API_DOC_PATH=$CBTUMBLEBUG_ROOT/src/api/rest/docs/swagger.json
+        source conf/setup.env        
         
-        #CONTAINER_VOLUME_PATH="$CBTUMBLEBUG_ROOT/container-volume/cb-spider-container"
-        #CONTAINER_VOLUME_OPTION="-v $CONTAINER_VOLUME_PATH:/root/go/src/github.com/cloud-barista/cb-spider/meta_db"
-        #sudo docker run --rm -p 1024:1024 -p 2048:2048 \
-        #        ${CONTAINER_VOLUME_OPTION} \
-        #         \
-        #        --name cb-spider \
-        #        cloudbaristaorg/cb-spider:0.6.8
-        #        
-        #sleep 3
-        #sudo docker ps -a
+        CONTAINER_VOLUME_PATH="$CBTUMBLEBUG_ROOT/container-volume/cb-spider-container"
+        CONTAINER_VOLUME_OPTION="-v $CONTAINER_VOLUME_PATH:/root/go/src/github.com/cloud-barista/cb-spider/meta_db"
+        sudo docker run --rm -p 1024:1024 -p 2048:2048 \
+               ${CONTAINER_VOLUME_OPTION} \
+                \
+               --name cb-spider \
+               cloudbaristaorg/cb-spider:0.6.8
+               
+        sleep 3
+        sudo docker ps -a
         
         cat > output.md <<EOF
         ### header
