@@ -25,7 +25,7 @@ jobs:
       run: |
         cp ./conf/template.credentials.conf ./conf/credentials.conf
         TEST=$(est/text/ddd)
-        sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${TEST}," ./conf/credentials.conf
+        sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${{secrets.AWS_KEY}}," ./conf/credentials.conf
         cat ./conf/credentials.conf
         
         ls -al        
@@ -36,7 +36,7 @@ jobs:
         - bullet
         (start)
         
-        ${GIT_STATUS}
+        ${cat ./conf/credentials.conf}
         
         (end)
         EOF
