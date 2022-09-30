@@ -37,7 +37,7 @@ jobs:
         
         CONTAINER_VOLUME_PATH="$CBTUMBLEBUG_ROOT/container-volume/cb-spider-container"
         CONTAINER_VOLUME_OPTION="-v $CONTAINER_VOLUME_PATH:/root/go/src/github.com/cloud-barista/cb-spider/meta_db"
-        sudo docker run --rm -p 1024:1024 -p 2048:2048 \
+        sudo docker run -d --rm -p 1024:1024 -p 2048:2048 \
                ${CONTAINER_VOLUME_OPTION} \
                 \
                --name cb-spider \
