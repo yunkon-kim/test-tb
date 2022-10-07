@@ -3,7 +3,7 @@ name: Instance image updater
 # Currently, use workflow_dispatch by which we can manually run this workflow
 on:
   workflow_dispatch:
-
+  
 jobs:
   update-image:
     # The type of runner that the job will run on
@@ -19,26 +19,33 @@ jobs:
         repository: cloud-barista/cb-tumblebug
         ref: v0.6.3
         
+    - name: Setup credentials from secrets
+      shell: bash
+      run: |
+      
+        # Copy credentials.conf
+        cp ./conf/template.credentials.conf ./conf/credentials.conf
+        
+        # Insert AWS credentials
+        sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${{secrets.AWS_KEY}}," ./conf/credentials.conf
+        sed -i "s,CredentialVal02\[\$IndexAWS\]=,&${{secrets.AWS_VALUE}}," ./conf/credentials.conf
+        
+        # (TBD) Append MS Azure, GCP, and etc.
+        
+        echo "(DEBUG) Print credential.conf (Secrets are MASKED as ***)"
+        cat ./conf/credentials.conf
+        
     - name: Setup frameworks
       shell: bash
       run: |
       
-        # Setup credentials
-        cp ./conf/template.credentials.conf ./conf/credentials.conf
+        # Set environment variables
+        echo "(DEBUG) Set CB-Tumblebug's environment variables"
+        source conf/setup.env
         
-        # Append AWS cred
-        sed -i "s,CredentialVal01\[\$IndexAWS\]=,&${{secrets.AWS_KEY}}," ./conf/credentials.conf
-        sed -i "s,CredentialVal02\[\$IndexAWS\]=,&${{secrets.AWS_VALUE}}," ./conf/credentials.conf
-        
-        echo "(DEBUG) Print credential.conf (Secrets are masked as ***)"
-        cat ./conf/credentials.conf
-        
-        source conf/setup.env        
-        
-        echo "CBTUMBLEBUG_ROOT:"
+        echo "(DEBUG) CBTUMBLEBUG_ROOT:"
         echo $CBTUMBLEBUG_ROOT
-        
-        ls -al        
+        ls -al
         
         # Run CB-Spider container
         echo "(DEBUG) Run CB-Spider container"
@@ -64,7 +71,7 @@ jobs:
         echo "Sleep 10 sec"
         sleep 1
         
-    - name: Do something
+    - name: Do something # This section will be used to updating instance image
       shell: bash
       run: |
       
@@ -89,7 +96,7 @@ jobs:
         message end
         EOF
       
-    - name: Create an issue from file    
+    - name: Create an issue from file
       uses: peter-evans/create-issue-from-file@v4
       with:
         title: An example issue
