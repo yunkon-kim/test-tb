@@ -40,6 +40,7 @@ jobs:
         
         ls -al        
         
+        # Run CB-Spider container
         echo "(DEBUG) Run CB-Spider container"
         CONTAINER_VOLUME_PATH="$CBTUMBLEBUG_ROOT/container-volume/cb-spider-container"
         CONTAINER_VOLUME_OPTION="-v $CONTAINER_VOLUME_PATH:/root/go/src/github.com/cloud-barista/cb-spider/meta_db"
@@ -54,12 +55,25 @@ jobs:
         echo "Sleep 15 sec"
         sleep 15
         
+        # Run CB-Tumblebug Server
+        echo "(DEBUG) Run CB-Tumblebug server"
+        cd src
+        make        
+        make run &
+        
+        echo "Sleep 10 sec"
+        sleep 1
+        
     - name: Do something
       shell: bash
       run: |
       
+        echo "(DEBUG) Health-check, CB-Spider container"
         curl -sX GET http://localhost:1024/spider/cloudos |json_pp
         
+        echo "(DEBUG) Health-check, CB-Tumblebug server"
+        http://localhost:1323/tumblebug/health
+                
         echo "(DEBUG) Create issue content"
         cat <<EOF > output.md
         ### header
@@ -71,9 +85,6 @@ jobs:
         
         Hello world!!
         This issue is created by "peter-evans/create-issue-from-file@v4"
-        
-        Spider server state:
-        $(curl -sX GET http://{server}:1024/spider/cloudos |json_pp)
 
         message end
         EOF
