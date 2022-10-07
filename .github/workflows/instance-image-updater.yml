@@ -64,9 +64,12 @@ jobs:
         1. number
         
         message start
-
+        
         Hello world!!
         This issue is created by "peter-evans/create-issue-from-file@v4"
+        
+        Spider server state:
+        $(curl -sX GET http://{server}:1024/spider/cloudos |json_pp)
 
         message end
         EOF
