@@ -72,7 +72,7 @@ jobs:
         curl -sX GET http://localhost:1024/spider/cloudos |json_pp
         
         echo "(DEBUG) Health-check, CB-Tumblebug server"
-        http://localhost:1323/tumblebug/health
+        curl http://localhost:1323/tumblebug/health
                 
         echo "(DEBUG) Create issue content"
         cat <<EOF > output.md
