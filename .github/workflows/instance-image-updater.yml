@@ -35,6 +35,9 @@ jobs:
         
         source conf/setup.env        
         
+        echo "CBTUMBLEBUG_ROOT:"
+        echo $CBTUMBLEBUG_ROOT
+        
         echo "(DEBUG) Run CB-Spider container"
         CONTAINER_VOLUME_PATH="$CBTUMBLEBUG_ROOT/container-volume/cb-spider-container"
         CONTAINER_VOLUME_OPTION="-v $CONTAINER_VOLUME_PATH:/root/go/src/github.com/cloud-barista/cb-spider/meta_db"
