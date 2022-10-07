@@ -49,13 +49,17 @@ jobs:
                --name cb-spider \
                cloudbaristaorg/cb-spider:0.6.8
         
-        sleep 5
         sudo docker ps -a
-        sleep 5        
+        
+        echo "Sleep 15 sec"
+        sleep 15
         
     - name: Do something
       shell: bash
       run: |
+      
+        curl -sX GET http://localhost:1024/spider/cloudos |json_pp
+        
         echo "(DEBUG) Create issue content"
         cat <<EOF > output.md
         ### header
